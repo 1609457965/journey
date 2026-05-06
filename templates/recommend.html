@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贵州景点推荐</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 贵州景点推荐</h1>
+            <p>基于评分为您推荐贵州最值得游览的景点</p>
+            <nav class="nav-links">
+                <a href="/">🎯 进入综合推荐系统</a>
+            </nav>
+        </div>
+
+        <div id="content">
+            <div style="text-align: center; padding: 50px;">
+                <div class="loading-spinner"></div>
+                <p style="color: #7f8c8d; margin-top: 20px;">正在加载推荐数据...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecommendationData();
+        });
+
+        // 加载推荐数据
+        async function loadRecommendationData() {
+            try {
+                const response = await fetch('/get_recommendations');
+                if (response.ok) {
+                    const data = await response.json();
+                    displayAttractionsList(data);
+                } else {
+                    throw new Error('获取推荐数据失败');
+                }
+            } catch (error) {
+                console.error('加载推荐数据失败:', error);
+                document.getElementById('content').innerHTML = `
+                    <div style="text-align: center; padding: 50px; color: #e74c3c;">
+                        <h3>加载数据失败</h3>
+                        <p>请刷新页面重试</p>
+                        <button onclick="location.reload()" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            刷新页面
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // 显示景点列表
+        function displayAttractionsList(attractions) {
+            const content = document.getElementById('content');
+
+            if (!attractions || attractions.length === 0) {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 50px; color: #7f8c8d;">
+                        <h3>暂无推荐数据</h3>
+                        <p>请稍后再试</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h2 style="color: #2c3e50; margin-bottom: 20px; text-align: center;">🌟 贵州热门景点推荐</h2>
+                    <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
+                        以下景点按评分排序，为您精选贵州最值得游览的地方
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            `;
+
+            attractions.slice(0, 20).forEach((attraction, index) => {
+                const shortName = attraction.景点名称.split(',')[0];
+                const location = attraction.景点名称.includes(',') ? attraction.景点名称.split(',')[1] : '';
+
+                html += `
+                    <div style="border: 1px solid #ecf0f1; border-radius: 10px; padding: 20px; background: #f8f9fa; transition: all 0.3s; cursor: pointer; position: relative;"
+                         onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)'; this.style.borderColor='#3498db'"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#ecf0f1'"
+                         onclick="selectAttraction('${attraction.景点名称}', '${attraction.评分}')">
+
+                        <div style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #3498db, #2980b9); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9em;">
+                            ${index + 1}
+                        </div>
+
+                        <h4 style="color: #2c3e50; margin: 0 30px 10px 0; font-size: 1.1em; line-height: 1.3;">
+                            ${shortName}
+                        </h4>
+
+                        ${location ? `<p style="color: #7f8c8d; margin: 5px 0; font-size: 0.9em;">📍 ${location}</p>` : ''}
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid #ecf0f1;">
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <span style="color: #e74c3c; font-weight: bold; font-size: 1.1em;">⭐ ${attraction.评分}</span>
+                            </div>
+                            <span style="color: #27ae60; font-size: 0.9em; background: #ecf0f1; padding: 4px 8px; border-radius: 4px;">
+                                ${attraction.评分人数 || '热门景点'}
+                            </span>
+                        </div>
+
+                        <div style="margin-top: 10px; text-align: center;">
+                            <span style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.8em; display: inline-block;">
+                                点击查看详情
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                    <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 2px solid #ecf0f1;">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px;">🎯 想要更个性化的推荐？</h3>
+                        <p style="color: #7f8c8d; margin-bottom: 20px;">选择您喜欢的景点、美食、酒店和交通方式，生成专属旅游方案</p>
+                        <a href="/" style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 15px 35px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: all 0.3s; font-size: 1.1em;"
+                           onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(52, 152, 219, 0.3)'"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                            🚀 进入综合推荐系统
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        // 选择景点
+        function selectAttraction(name, rating) {
+            console.log('选择景点:', name, rating);
+            // 可以添加跳转到详情页面或添加到收藏的逻辑
+            alert(`您选择了景点: ${name.split(',')[0]}\n评分: ${rating}`);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贵州旅游综合推荐系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 贵州旅游综合推荐系统</h1>
+            <p>选择您感兴趣的景点、美食、酒店和交通，我们将为您生成个性化的旅游推荐方案</p>
+        </div>
+
+        <div class="main-content">
+            <div class="categories-section">
+                <div class="category-tab">
+                    <button class="tab-button active" onclick="showTab('attractions')">🏞️ 景点</button>
+                    <button class="tab-button" onclick="showTab('food')">🍜 美食</button>
+                    <button class="tab-button" onclick="showTab('hotels')">🏨 酒店</button>
+                    <button class="tab-button" onclick="showTab('transport')">🚄 交通</button>
+                </div>
+
+                <!-- 景点 -->
+                <div id="attractions-tab" class="tab-content active">
+                    <div class="items-grid" id="attractions-grid">
+                        <!-- 景点数据将通过JavaScript动态加载 -->
+                    </div>
+                    <a href="http://127.0.0.1:5000" target="_blank">
+                        <button class="recommend-button">推荐!!</button>
+                    </a>
+                </div>
+
+                <!-- 美食 -->
+                <div id="food-tab" class="tab-content">
+                    <div class="items-grid" id="food-grid">
+                        <!-- 美食数据将通过JavaScript动态加载 -->
+                    </div>
+                    <a href="http://127.0.0.1:5501/templates/food_ranking.html" target="_blank">
+                        <button class="recommend-button">推荐!!</button>
+                    </a>
+                </div>
+
+                <!-- 酒店 -->
+                <div id="hotels-tab" class="tab-content">
+                    <div class="items-grid" id="hotels-grid">
+                        <!-- 酒店数据将通过JavaScript动态加载 -->
+                    </div>
+                    <a href="http://127.0.0.1:5501/templates/hotel.html" target="_blank">
+                        <button class="recommend-button">推荐!!</button>
+                    </a>
+                </div>
+
+                <!-- 交通 -->
+                <div id="transport-tab" class="tab-content">
+                    <div class="items-grid" id="transport-grid">
+                        <!-- 交通数据将通过JavaScript动态加载 -->
+                    </div>
+                    <a href="http://127.0.0.1:5501/templates/%E4%B8%8A%E6%B5%B7%E5%88%B0%E8%B4%B5%E5%B7%9E%E5%87%BA%E8%A1%8C%E6%8E%A8%E8%8D%90_%E7%81%AB%E8%BD%A6%E9%A3%9E%E6%9C%BA%E5%90%845%E4%B8%AA.html" target="_blank">
+                        <button class="recommend-button">推荐!!</button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="cart-section">
+                <div class="cart-header">
+                    <h3>🛒 我的选择</h3>
+                    <span class="cart-count">0 项</span>
+                </div>
+
+                <div id="cart-content">
+                    <div class="empty-cart">
+                        <i>🛒</i>
+                        <p>请从左侧选择项目</p>
+                    </div>
+                </div>
+
+                <button class="generate-btn" onclick="generateRecommendations()" disabled>
+                    生成推荐方案
+                </button>
+            </div>
+        </div>
+
+        <div id="recommendations-section" class="recommendations-section" style="display: none;">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">
+                ✨ 为您生成的个性化推荐方案
+            </h2>
+            <div id="recommendations-list">
+                <!-- 推荐方案将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>正在生成您的专属推荐方案...</p>
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
