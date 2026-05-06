@@ -18,6 +18,9 @@ Thumbs.db
 logs/
 *.log
 .ipynb_checkpoints/
+crawlers/**/cookies.json
+crawlers/**/*.tmp
+crawlers/**/debug_page_source.html
 
 # Large or license-sensitive local assets
 static/SimHei.ttf

@@ -15,6 +15,7 @@
 ├── train_data/             # 火车/高铁数据
 ├── fooddata/               # 美食评论数据
 ├── 景点评论/               # 景点评论数据
+├── crawlers/               # 菜谱、景点、美食、交通等爬虫源码
 ├── wordcloud_images/       # 已生成的美食词云图片
 ├── 贵州景点基本信息.csv
 ├── 美食基本信息.csv
@@ -45,3 +46,4 @@ python app.py
 
 - `static/SimHei.ttf` 未纳入 Git，主要是避免提交较大的字体文件和潜在授权问题；如需更好的中文词云显示，可在本地将可用中文字体放到该路径。
 - `.idea/`、`__pycache__/`、日志和临时文件已通过 `.gitignore` 排除。
+- 爬虫代码已整理到 `crawlers/`，其中 notebook 输出被去除，保留为可读的 `.py` 源码；爬虫专用依赖见 `crawlers/requirements-crawlers.txt`。
